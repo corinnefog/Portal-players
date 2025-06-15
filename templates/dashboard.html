@@ -9,6 +9,7 @@
     <h3>Your Stats:</h3>
     <table border="1">
         <tr>
+	    <th>Date</th> 
             <th>P_num</th>
             <th>Pitcher</th>
             <th>Inning</th>
@@ -20,20 +21,15 @@
 	    <th>R</th>
 	    <th>Balls</th>
 	    <th>Strikes</th>
-	    <th>Ball</th>
-	    <th>Strike</th>
-	    <th>One_PK</th>
-	    <th>Outs_1</th>
 	    <th>pitch_ab</th>
 	    <th>pitch_IP</th>
-	    <th>A3P</th>
-	    <th>le15</th>
-	    <th>Strikes_1</th>
 	    <th>COUNT</th>
-	    <th>Date</th>
+	    <th>Velocity</th>
+	    <th>Spin Rate</th>  
         </tr>
         {% for pitch in pitches %}
         <tr>
+	    <td>{{ pitch['Date'] }}</td>
             <td>{{ pitch['P_num'] }}</td>
             <td>{{ pitch['Pitcher'] }}</td>
             <td>{{ pitch['Inning'] }}</td>
@@ -45,17 +41,11 @@
 	    <td>{{ pitch['R'] }}</td>
 	    <td>{{ pitch['Balls'] }}</td>
 	    <td>{{ pitch['Strikes'] }}</td>
-	    <td>{{ pitch['Ball'] }}</td>
-	    <td>{{ pitch['Strike'] }}</td>
-	    <td>{{ pitch['One_PK'] }}</td>
-	    <td>{{ pitch['Outs_1'] }}</td>
 	    <td>{{ pitch['pitch_ab'] }}</td>
 	    <td>{{ pitch['pitch_IP'] }}</td>
-	    <td>{{ pitch['A3P'] }}</td>
-	    <td>{{ pitch['le15'] }}</td>
-	    <td>{{ pitch['Strikes_1'] }}</td>
 	    <td>{{ pitch['COUNT'] }}</td>
-	    <td>{{ pitch['Date'] }}</td> 
+	    <td>{{ pitch['Velocity'] }}</td>
+	    <td>{{ pitch['Spin Rate'] }}</td> 
         </tr>
         {% endfor %}
     </table>
