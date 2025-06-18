@@ -6,49 +6,101 @@
 <body>
     <h2>Welcome, {{ session['username'] }}</h2>
     <a href="{{ url_for('logout') }}">Logout</a>
+    <form method="get" action="{{ url_for('dashboard') }}">
+       <label for="view">Select View:</label>
+       <select name="view" id="view" onchange="this.form.submit()">
+           <option value="pitches" {% if current_view == 'pitches' %}selected{% endif %}>Game-by-Game Stats</option>
+           <option value="averages" {% if current_view == 'averages' %}selected{% endif %}>Averages</option>
+       </select>
+    </form>
+
     <h3>Your Stats:</h3>
-    <table border="1">
-        <tr>
-	    <th>Date</th> 
-            <th>P_num</th>
-            <th>Pitcher</th>
-            <th>Inning</th>
-	    <th>Outs</th>
-	    <th>LR</th>
-	    <th>Pitch</th>
-	    <th>SB</th>
-	    <th>Result</th>
-	    <th>R</th>
-	    <th>Balls</th>
-	    <th>Strikes</th>
-	    <th>pitch_ab</th>
-	    <th>pitch_IP</th>
-	    <th>COUNT</th>
-	    <th>Velocity</th>
-	    <th>Spin_Rate</th>  
-        </tr>
-        {% for pitch in pitches %}
-        <tr>
-	    <td>{{ pitch['Date'] }}</td>
-            <td>{{ pitch['P_num'] }}</td>
-            <td>{{ pitch['Pitcher'] }}</td>
-            <td>{{ pitch['Inning'] }}</td>
-            <td>{{ pitch['Outs'] }}</td>
-            <td>{{ pitch['LR'] }}</td>
-            <td>{{ pitch['Pitch'] }}</td>
-	    <td>{{ pitch['SB'] }}</td>
-	    <td>{{ pitch['Result'] }}</td>
-	    <td>{{ pitch['R'] }}</td>
-	    <td>{{ pitch['Balls'] }}</td>
-	    <td>{{ pitch['Strikes'] }}</td>
-	    <td>{{ pitch['pitch_ab'] }}</td>
-	    <td>{{ pitch['pitch_IP'] }}</td>
-	    <td>{{ pitch['COUNT'] }}</td>
-	    <td>{{ pitch['Velocity'] }}</td>
-	    <td>{{ pitch['Spin_Rate'] }}</td> 
-        </tr>
-        {% endfor %}
-    </table>
+
+    {% if current_view == 'pitches' %}
+
+    	 <table border="1">
+             <tr>
+	   	 <th>Date</th> 
+           	 <th>P_num</th>
+           	 <th>Pitcher</th>
+           	 <th>Inning</th>
+	   	 <th>Outs</th>
+	   	 <th>LR</th>
+	   	 <th>Pitch</th>
+	   	 <th>SB</th>
+	   	 <th>Result</th>
+	   	 <th>R</th>
+	   	 <th>Balls</th>
+	   	 <th>Strikes</th>
+	   	 <th>pitch_ab</th>
+	   	 <th>pitch_IP</th>
+	   	 <th>COUNT</th>
+	   	 <th>Velocity</th>
+	   	 <th>Spin_Rate</th>  
+       	     </tr>
+       	     {% for pitch in data %}
+             <tr>
+	   	 <td>{{ pitch['Date'] }}</td>
+           	 <td>{{ pitch['P_num'] }}</td>
+           	 <td>{{ pitch['Pitcher'] }}</td>
+           	 <td>{{ pitch['Inning'] }}</td>
+           	 <td>{{ pitch['Outs'] }}</td>
+           	 <td>{{ pitch['LR'] }}</td>
+           	 <td>{{ pitch['Pitch'] }}</td>
+	   	 <td>{{ pitch['SB'] }}</td>
+	   	 <td>{{ pitch['Result'] }}</td>
+	   	 <td>{{ pitch['R'] }}</td>
+	   	 <td>{{ pitch['Balls'] }}</td>
+	   	 <td>{{ pitch['Strikes'] }}</td>
+	   	 <td>{{ pitch['pitch_ab'] }}</td>
+	   	 <td>{{ pitch['pitch_IP'] }}</td>
+	   	 <td>{{ pitch['COUNT'] }}</td>
+	   	 <td>{{ pitch['Velocity'] }}</td>
+	   	 <td>{{ pitch['Spin_Rate'] }}</td> 
+       	     </tr>
+             {% endfor %}
+   	 </table>
+     {% elif current_view == 'averages' %}
+	 <table border="1">
+	     <tr>
+		 <th>Date</th>
+                 <th>Pitcher</th>
+                 <th>FB_Velo_Avg</th>
+                 <th>FB_Spin_Avg</th>
+                 <th>CH_Velo_Avg</th>
+                 <th>CH_Spin_Avg</th>
+                 <th>SL_Velo_Avg</th>
+                 <th>SL_Spin_Avg</th>
+                 <th>CB_Velo_Avg</th>
+                 <th>CB_Spin_Avg</th>
+                 <th>OT_Velo_Avg</th>
+                 <th>OT_Spin_Avg</th>
+                 <th>SNK_Velo_Avg</th>
+                 <th>SNK_Spin_Avg</th>
+             </tr>
+             {% for average in data %}
+             <tr>
+                 <td>{{ average['Date'] }}</td>
+                 <td>{{ average['Pitcher'] }}</td>
+                 <td>{{ average['FB_Velo_Avg'] }}</td>
+                 <td>{{ average['FB_Spin_Avg'] }}</td>
+                 <td>{{ average['CH_Velo_Avg'] }}</td>
+                 <td>{{ average['CH_Spin_Avg'] }}</td>
+                 <td>{{ average['SL_Velo_Avg'] }}</td>
+                 <td>{{ average['SL_Spin_Avg'] }}</td>
+                 <td>{{ average['CB_Velo_Avg'] }}</td>
+                 <td>{{ average['CB_Spin_Avg'] }}</td>
+                 <td>{{ average['OT_Velo_Avg'] }}</td>
+                 <td>{{ average['OT_Spin_Avg'] }}</td>
+                 <td>{{ average['SNK_Velo_Avg'] }}</td>
+                 <td>{{ average['SNK_Spin_Avg'] }}</td>
+
+	     </tr>
+	     {% endfor %}
+	</table>
+    {% else %}
+	<p>No data available for this view.<p>
+    {% endif %} 	
 </body>
 </html>
 

@@ -38,12 +38,26 @@ def dashboard():
         return redirect(url_for('login'))
 
     username = session['username']
+    view = request.args.get('view', 'pitches')
+
     conn = get_db_connection()
-    pitches = conn.execute('SELECT * FROM pitches WHERE Pitcher = ?', 
-(username,)).fetchall()
+    conn.row_factory = sqlite3.Row
+
+    if view == 'averages':
+        data = conn.execute(
+            'SELECT * FROM averages WHERE Pitcher = ?',
+            (username,)
+        ).fetchall()
+    else:
+        data = conn.execute(
+            'SELECT * FROM pitches WHERE Pitcher = ?',
+            (username,)
+        ).fetchall()
+
     conn.close()
 
-    return render_template('dashboard.html', pitches=pitches)
+    return render_template('dashboard.html', data=data, current_view=view)
+
 
 @app.route('/logout')
 def logout():
