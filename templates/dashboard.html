@@ -11,6 +11,7 @@
        <select name="view" id="view" onchange="this.form.submit()">
            <option value="pitches" {% if current_view == 'pitches' %}selected{% endif %}>Game-by-Game Stats</option>
            <option value="averages" {% if current_view == 'averages' %}selected{% endif %}>Averages</option>
+	   <option value="strike_stats" {% if current_view == 'strike_stats' %}selected{% endif %}>Strike Percentages</option>	
        </select>
     </form>
 
@@ -98,6 +99,51 @@
 	     </tr>
 	     {% endfor %}
 	</table>
+      {% elif current_view == 'strike_stats' %}
+	<h2>Game-by-Game Strike Stats</h2>
+          <table border="1">
+	      <tr>
+	          <th>Date</th>
+                  <th>Pitcher</th> 
+                  <th>Total Pitches</th>
+                  <th>Strikes</th>
+                  <th>Strike Percentage</th>
+	      </tr>
+              {% for row in game_data %}
+              <tr>
+                  <td>{{ row['Date'] }}</td>
+                  <td>{{ row['Pitcher'] }}</td>
+                  <td>{{ row['total_pitches'] }}</td>
+                  <td>{{ row['strikes'] }}</td>
+                  <td>{{ row['strike_pct'] }}</td>
+              </tr>
+              {% endfor %}
+	 </table>
+
+	  <h2>Season Totals</h2>
+	  <table border="1">
+              <tr>
+	          <th>Pitcher</th>
+                  <th>Total Pitches</th>
+                  <th>Strikes</th>
+		  <th>First Pitches</th>
+                  <th>First Pitch Strikes</th>
+                  <th>Strike %</th>
+                  <th>First Strike %</th>
+              </tr>
+              {% for row in season_data %}
+              <tr>
+                  <td>{{ row['Pitcher'] }}</td>
+                  <td>{{ row['total_pitches'] }}</td>
+                  <td>{{ row['strikes'] }}</td>
+		  <td>{{ row['first_pitch_total'] }}</td>
+                  <td>{{ row['first_pitch_strikes'] }}</td>
+                  <td>{{ row['strike_pct'] }}%</td>
+                  <td>{{ row['first_strike_pct'] }}%</td>
+
+              </tr>
+              {% endfor %}
+         </table>	    
     {% else %}
 	<p>No data available for this view.<p>
     {% endif %} 	

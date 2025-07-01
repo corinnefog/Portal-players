@@ -36,8 +36,8 @@ def login():
 def dashboard():
     if 'username' not in session:
         return redirect(url_for('login'))
-
-    username = session['username']
+    
+    username = session['username']   
     view = request.args.get('view', 'pitches')
 
     conn = get_db_connection()
@@ -48,15 +48,34 @@ def dashboard():
             'SELECT * FROM averages WHERE Pitcher = ?',
             (username,)
         ).fetchall()
+        conn.close()
+        return render_template('dashboard.html', data=data, current_view=view)
+
+    elif view == 'strike_stats':
+        game_data = conn.execute(
+            'SELECT * FROM strike_stats_game WHERE Pitcher = ?',
+            (username,)
+        ).fetchall()
+        season_data = conn.execute(
+            'SELECT * FROM strike_stats_overall WHERE Pitcher = ?',
+            (username,)
+        ).fetchall()
+        conn.close()
+        return render_template(
+            'dashboard.html',
+            game_data=game_data,
+            season_data=season_data,
+            current_view=view
+        )
+
     else:
         data = conn.execute(
             'SELECT * FROM pitches WHERE Pitcher = ?',
             (username,)
         ).fetchall()
+        conn.close()
+        return render_template('dashboard.html', data=data, current_view=view)
 
-    conn.close()
-
-    return render_template('dashboard.html', data=data, current_view=view)
 
 
 @app.route('/logout')
