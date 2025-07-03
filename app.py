@@ -60,13 +60,19 @@ def dashboard():
             'SELECT * FROM strike_stats_overall WHERE Pitcher = ?',
             (username,)
         ).fetchall()
+        pitch_type_season = conn.execute(
+            'SELECT * FROM strike_stats_pitch_type_overall WHERE Pitcher = ?',
+            (username,)
+        ).fetchall()
         conn.close()
-        return render_template(
-            'dashboard.html',
+        return render_template('dashboard.html',
+            data=None,
             game_data=game_data,
             season_data=season_data,
+            pitch_type_season=pitch_type_season,
             current_view=view
         )
+
 
     else:
         data = conn.execute(

@@ -140,10 +140,27 @@
                   <td>{{ row['first_pitch_strikes'] }}</td>
                   <td>{{ row['strike_pct'] }}%</td>
                   <td>{{ row['first_strike_pct'] }}%</td>
-
-              </tr>
-              {% endfor %}
-         </table>	    
+	      </tr>
+	      {% endfor %}
+	 </table>
+ 	 <h2>Pitch Type Strike % — Season Totals</h2>
+ 	 <table border="1">
+   	     <tr>
+     		 <th>Pitch</th>
+     		 <th>Total Pitches</th>
+     		 <th>Strikes</th>
+     		 <th>Strike %</th>
+   	     </tr>
+	     {% for row in pitch_type_season %}
+   	     <tr>
+     		 <td>{{ row['Pitch'] }}</td>
+     		 <td>{{ row['total_pitches'] }}</td>
+     		 <td>{{ row['strikes'] }}</td>
+     		 <td>{{ row['strike_pct'] }}</td>
+   	     </tr>
+   	     {% endfor %}
+        </table>
+	    
     {% else %}
 	<p>No data available for this view.<p>
     {% endif %} 	

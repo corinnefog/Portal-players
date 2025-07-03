@@ -33,6 +33,17 @@ CREATE TABLE IF NOT EXISTS strike_stats_overall (
 )
 ''')
 
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS strike_stats_pitch_type_overall (
+    Pitcher TEXT,
+    Pitch TEXT,
+    total_pitches INTEGER,
+    strikes INTEGER,
+    strike_pct REAL,
+    PRIMARY KEY (Pitcher, Pitch)
+)   
+''')
+
 # Need for season totals later
 all_data = []
 
@@ -46,8 +57,6 @@ for filename in os.listdir(CSV_FOLDER):
             continue
 
         df['is_strike'] = df['SB'].isin(strike_results)
-
-        all_data.append(df)
 
         # Game grouping
         grouped = df.groupby(['Date', 'Pitcher']).agg(
@@ -69,6 +78,8 @@ for filename in os.listdir(CSV_FOLDER):
                 int(row['total_pitches']), int(row['strikes']),
                 float(row['strike_pct'])
             ))
+  
+        all_data.append(df)
 
 # Calculate season totals
 if all_data:
@@ -78,6 +89,25 @@ if all_data:
     first_pitches = all_df[all_df['P_num'] == 1]
     first_pitch_total = first_pitches.groupby('Pitcher').size().astype(int)
     first_pitch_strikes = first_pitches[first_pitches['SB'].isin(strike_results)].groupby('Pitcher').size().astype(int)
+
+    if 'Pitch' in all_df.columns:
+        season = all_df.groupby(['Pitcher', 'Pitch']).agg(
+            total_pitches=('P_num', 'count'),
+            strikes=('is_strike', 'sum')
+        ).reset_index()
+            
+        season['strike_pct'] = 100 * season['strikes'] / season['total_pitches']
+        season = season.round(1)
+        
+        for _, row in season.iterrows():
+            cursor.execute('''
+                INSERT OR REPLACE INTO strike_stats_pitch_type_overall (
+                    Pitcher, Pitch, total_pitches, strikes, strike_pct
+                ) VALUES (?, ?, ?, ?, ?)
+            ''', (
+                row['Pitcher'], row['Pitch'],
+                int(row['total_pitches']), int(row['strikes']), float(row['strike_pct'])
+            ))
 
     overall = all_df.groupby('Pitcher').agg(
         total_pitches=('P_num', 'count'),
