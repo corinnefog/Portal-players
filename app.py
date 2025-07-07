@@ -53,7 +53,7 @@ def dashboard():
 
     elif view == 'strike_stats':
         game_data = conn.execute(
-            'SELECT * FROM strike_stats_game WHERE Pitcher = ?',
+            'SELECT * FROM strike_stats_game WHERE Pitcher = ? ORDER by Date',
             (username,)
         ).fetchall()
         season_data = conn.execute(

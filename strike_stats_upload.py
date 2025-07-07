@@ -5,7 +5,7 @@ import os
 DB_PATH = 'portalplayers.db'
 CSV_FOLDER = os.path.expanduser('~/Downloads/Tomsox Data/Merged')
 
-strike_results = ['Strike-Take', 'Swing & Miss', 'Foul Ball', 'Foul Bunt']
+strike_results = ['Strike-Take', 'Swing & Miss', 'Foul Ball', 'BIP']
 
 conn = sqlite3.connect(DB_PATH)
 cursor = conn.cursor()
@@ -58,7 +58,7 @@ for filename in os.listdir(CSV_FOLDER):
 
         df['is_strike'] = df['SB'].isin(strike_results)
 
-        # Game grouping
+       
         grouped = df.groupby(['Date', 'Pitcher']).agg(
             total_pitches=('P_num', 'count'),
             strikes=('is_strike', 'sum'),
@@ -143,5 +143,5 @@ if all_data:
 
 conn.commit()
 conn.close()
-print("Strike stats uploaded to strike_stats_game and strike_stats_overall.")
+print("Strike stats uploaded")
 
