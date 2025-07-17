@@ -5,7 +5,7 @@ import os
 DB_PATH = 'portalplayers.db'
 CSV_FOLDER = os.path.expanduser('~/Downloads/Tomsox Data/Merged')
 
-strike_results = ['Strike-Take', 'Swing & Miss', 'Foul Ball', 'BIP']
+strike_results = ['Strike-Take', 'Swing & Miss', 'Foul Ball', 'BIP', 'Strike Bunt']
 
 conn = sqlite3.connect(DB_PATH)
 cursor = conn.cursor()
