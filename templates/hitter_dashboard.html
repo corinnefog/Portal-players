@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Player Dashboard</title>
+</head>
+<body>
+    <h2>Welcome, {{ session['username'] }}</h2>
+    <a href="{{ url_for('logout') }}">Logout</a>
+
+    <h3>Your Stats:</h3>
+
+         <table border ="1">
+             <tr>
+                 <th>Hitter</th>
+                 <th>AB</th>
+                 <th>XBH %</th>
+                 <th>SLG %</th>
+                 <th>ISO</th>
+                 <th>OPS</th>
+                 <th>AVG</th>
+                 <th>RBI</th>
+                 <th>HR</th>
+             </tr>
+             {% for hitting_stat in data %}
+             <tr>
+                 <td>{{hitting_stat['Hitter'] }}</td>
+                 <td>{{hitting_stat['AB'] }}</td>
+                 <td>{{hitting_stat['XBH%'] }}</td>
+                 <td>{{hitting_stat['SLG%'] }}</td>
+                 <td>{{hitting_stat['ISO'] }}</td>
+                 <td>{{hitting_stat['OPS'] }}</td>
+                 <td>{{hitting_stat['AVG'] }}</td>
+                 <td>{{hitting_stat['RBI'] }}</td>
+                 <td>{{hitting_stat['HR'] }}</td> 
+             </tr>
+             {% endfor %}
+         </table>
+</body>
+</html>

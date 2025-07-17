@@ -3,7 +3,7 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.secret_key = 'tomsox2025'  # Replace with a real secret key
+app.secret_key = 'tomsox2025'
 
 def get_db_connection():
     conn = sqlite3.connect('portalplayers.db')
@@ -12,7 +12,7 @@ def get_db_connection():
 
 @app.route('/')
 def home():
-    return redirect(url_for('login'))
+    return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -31,6 +31,25 @@ def login():
         else:
             return 'Invalid username or password'
     return render_template('login.html')
+
+@app.route('/hitter_login', methods=['GET', 'POST'])
+def hitter_login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        conn = get_db_connection()
+        user = conn.execute('SELECT * from hitting_users WHERE username = ?',
+(username, )).fetchone()
+        conn.close()
+
+        if user and check_password_hash(user['password'], password):
+            session['username'] = username
+            session['role'] = 'hitter'
+            return redirect(url_for('hitter_dashboard'))
+        else:
+            return 'Invalid username or password'
+    return render_template('hitter_login.html')
 
 @app.route('/dashboard')
 def dashboard():
@@ -82,7 +101,20 @@ def dashboard():
         conn.close()
         return render_template('dashboard.html', data=data, current_view=view)
 
+@app.route('/hitter_dashboard')
+def hitter_dashboard():
+    if 'username' not in session or session.get('role') != 'hitter':
+        return redirect(url_for('hitter_login'))
 
+    username = session['username']
+    conn = get_db_connection()
+    conn.row_factory = sqlite3.Row
+    data = conn.execute(
+        'SELECT * FROM hitting_stats WHERE Hitter = ?', (username,)
+    ).fetchall()
+    conn.close()
+
+    return render_template('hitter_dashboard.html', data=data)
 
 @app.route('/logout')
 def logout():
