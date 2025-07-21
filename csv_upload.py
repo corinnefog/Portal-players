@@ -2,7 +2,7 @@ import pandas as pd
 import sqlite3
 import os
 
-csv_path = os.path.expanduser("~/Downloads/Tomsox Data/Merged/TomSox 7-19-2025_merged.csv")
+csv_path = os.path.expanduser("~/Downloads/Tomsox Data/Merged/TomSox 7-20-2025_merged.csv")
 
 # Load as CSV, not Excel
 df = pd.read_csv(csv_path, encoding='latin1', engine='python', on_bad_lines='skip')
