@@ -6,6 +6,13 @@
 <body>
     <h2>Welcome, {{ session['username'] }}</h2>
     <a href="{{ url_for('logout') }}">Logout</a>
+
+    {% if announcement %}
+    <div style="background-color: #fffae6; border: 1px solid #f0c36d; padding: 10px; margin-bottom: 15px;">
+        <strong>Announcement:</strong> {{ announcement }}
+    </div>
+    {% endif %}
+
     <form method="get" action="{{ url_for('dashboard') }}">
        <label for="view">Select View:</label>
        <select name="view" id="view" onchange="this.form.submit()">

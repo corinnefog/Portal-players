@@ -59,6 +59,8 @@ def dashboard():
     username = session['username']   
     view = request.args.get('view', 'pitches')
 
+    announcement = 'Radar gun was off center for game 7/28. Velos under by 2-3 mph.'
+
     conn = get_db_connection()
     conn.row_factory = sqlite3.Row
 
@@ -68,7 +70,7 @@ def dashboard():
             (username,)
         ).fetchall()
         conn.close()
-        return render_template('dashboard.html', data=data, current_view=view)
+        return render_template('dashboard.html', data=data, current_view=view, announcement=announcement)
 
     elif view == 'strike_stats':
         game_data = conn.execute(
@@ -89,7 +91,8 @@ def dashboard():
             game_data=game_data,
             season_data=season_data,
             pitch_type_season=pitch_type_season,
-            current_view=view
+            current_view=view,
+            announcement=announcement
         )
 
 
@@ -99,7 +102,7 @@ def dashboard():
             (username,)
         ).fetchall()
         conn.close()
-        return render_template('dashboard.html', data=data, current_view=view)
+        return render_template('dashboard.html', data=data, current_view=view, announcement=announcement)
 
 @app.route('/hitter_dashboard')
 def hitter_dashboard():
