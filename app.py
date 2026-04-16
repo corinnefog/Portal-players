@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 from collections import defaultdict
 
 app = Flask(__name__)
-app.secret_key = 'tomsox2025'
+app.secret_key = ''
 
 PITCH_COLORS = {
     "FB": "#E63946",
