@@ -1,172 +1,257 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Player Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pitcher Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .announcement {
+            background-color: #f5e9c8;
+            border: 1px solid #d9b86c;
+            padding: 12px;
+            margin: 12px 0 20px 0;
+            font-size: 16px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .chart-container {
+            margin-bottom: 25px;
+        }
+
+        .top-links {
+            margin-bottom: 10px;
+        }
+
+        .view-form {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Welcome, {{ session['username'] }}</h2>
-    <a href="{{ url_for('logout') }}">Logout</a>
 
-    {% if announcement %}
-    <div style="background-color: #fffae6; border: 1px solid #f0c36d; padding: 10px; margin-bottom: 15px;">
+    <div class="top-links">
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+
+    <div class="announcement">
         <strong>Announcement:</strong> {{ announcement }}
     </div>
-    {% endif %}
 
-    <form method="get" action="{{ url_for('dashboard') }}">
-       <label for="view">Select View:</label>
-       <select name="view" id="view" onchange="this.form.submit()">
-           <option value="pitches" {% if current_view == 'pitches' %}selected{% endif %}>Game-by-Game Stats</option>
-           <option value="averages" {% if current_view == 'averages' %}selected{% endif %}>Averages</option>
-	   <option value="strike_stats" {% if current_view == 'strike_stats' %}selected{% endif %}>Strike Percentages</option>	
-       </select>
-    </form>
+    <div class="view-form">
+        <form method="get" action="{{ url_for('dashboard') }}">
+            <label for="view"><strong>Select View:</strong></label>
+            <select name="view" id="view" onchange="this.form.submit()">
+                <option value="pitches" {% if current_view == 'pitches' %}selected{% endif %}>
+                    Game-by-Game Stats
+                </option>
+                <option value="averages" {% if current_view == 'averages' %}selected{% endif %}>
+                    Averages
+                </option>
+                <option value="strike_stats" {% if current_view == 'strike_stats' %}selected{% endif %}>
+                    Strike Stats
+                </option>
+            </select>
+        </form>
+    </div>
 
-    <h3>Your Stats:</h3>
+    <h2>Your Stats:</h2>
 
     {% if current_view == 'pitches' %}
 
-    	 <table border="1">
-             <tr>
-	   	 <th>Date</th> 
-           	 <th>P_num</th>
-           	 <th>Pitcher</th>
-           	 <th>Inning</th>
-	   	 <th>Outs</th>
-	   	 <th>LR</th>
-	   	 <th>Pitch</th>
-	   	 <th>SB</th>
-	   	 <th>Result</th>
-	   	 <th>R</th>
-	   	 <th>Balls</th>
-	   	 <th>Strikes</th>
-	   	 <th>pitch_ab</th>
-	   	 <th>pitch_IP</th>
-	   	 <th>COUNT</th>
-	   	 <th>Velocity</th>
-	   	 <th>Spin_Rate</th>  
-       	     </tr>
-       	     {% for pitch in data %}
-             <tr>
-	   	 <td>{{ pitch['Date'] }}</td>
-           	 <td>{{ pitch['P_num'] }}</td>
-           	 <td>{{ pitch['Pitcher'] }}</td>
-           	 <td>{{ pitch['Inning'] }}</td>
-           	 <td>{{ pitch['Outs'] }}</td>
-           	 <td>{{ pitch['LR'] }}</td>
-           	 <td>{{ pitch['Pitch'] }}</td>
-	   	 <td>{{ pitch['SB'] }}</td>
-	   	 <td>{{ pitch['Result'] }}</td>
-	   	 <td>{{ pitch['R'] }}</td>
-	   	 <td>{{ pitch['Balls'] }}</td>
-	   	 <td>{{ pitch['Strikes'] }}</td>
-	   	 <td>{{ pitch['pitch_ab'] }}</td>
-	   	 <td>{{ pitch['pitch_IP'] }}</td>
-	   	 <td>{{ pitch['COUNT'] }}</td>
-	   	 <td>{{ pitch['Velocity'] }}</td>
-	   	 <td>{{ pitch['Spin_Rate'] }}</td> 
-       	     </tr>
-             {% endfor %}
-   	 </table>
-     {% elif current_view == 'averages' %}
-	 <table border="1">
-	     <tr>
-		 <th>Date</th>
-                 <th>Pitcher</th>
-                 <th>FB_Velo_Avg</th>
-                 <th>FB_Spin_Avg</th>
-                 <th>CH_Velo_Avg</th>
-                 <th>CH_Spin_Avg</th>
-                 <th>SL_Velo_Avg</th>
-                 <th>SL_Spin_Avg</th>
-                 <th>CB_Velo_Avg</th>
-                 <th>CB_Spin_Avg</th>
-                 <th>SNK_Velo_Avg</th>
-                 <th>SNK_Spin_Avg</th>
-             </tr>
-             {% for average in data %}
-             <tr>
-                 <td>{{ average['Date'] }}</td>
-                 <td>{{ average['Pitcher'] }}</td>
-                 <td>{{ average['FB_Velo_Avg'] }}</td>
-                 <td>{{ average['FB_Spin_Avg'] }}</td>
-                 <td>{{ average['CH_Velo_Avg'] }}</td>
-                 <td>{{ average['CH_Spin_Avg'] }}</td>
-                 <td>{{ average['SL_Velo_Avg'] }}</td>
-                 <td>{{ average['SL_Spin_Avg'] }}</td>
-                 <td>{{ average['CB_Velo_Avg'] }}</td>
-                 <td>{{ average['CB_Spin_Avg'] }}</td>
-                 <td>{{ average['SNK_Velo_Avg'] }}</td>
-                 <td>{{ average['SNK_Spin_Avg'] }}</td>
+        {% if data and data|length > 0 %}
+            <table>
+                <tr>
+                    {% for key in data[0].keys() %}
+                        <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
 
-	     </tr>
-	     {% endfor %}
-	</table>
-      {% elif current_view == 'strike_stats' %}
-	<h2>Game-by-Game Strike Stats</h2>
-          <table border="1">
-	      <tr>
-	          <th>Date</th>
-                  <th>Pitcher</th> 
-                  <th>Total Pitches</th>
-                  <th>Strikes</th>
-                  <th>Strike Percentage</th>
-	      </tr>
-              {% for row in game_data %}
-              <tr>
-                  <td>{{ row['Date'] }}</td>
-                  <td>{{ row['Pitcher'] }}</td>
-                  <td>{{ row['total_pitches'] }}</td>
-                  <td>{{ row['strikes'] }}</td>
-                  <td>{{ row['strike_pct'] }}</td>
-              </tr>
-              {% endfor %}
-	 </table>
+                {% for row in data %}
+                    <tr>
+                        {% for key in row.keys() %}
+                            <td>{{ row[key] }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No pitch data available.</p>
+        {% endif %}
 
-	  <h2>Season Totals</h2>
-	  <table border="1">
-              <tr>
-	          <th>Pitcher</th>
-                  <th>Total Pitches</th>
-                  <th>Strikes</th>
-		  <th>First Pitches</th>
-                  <th>First Pitch Strikes</th>
-                  <th>Strike %</th>
-                  <th>First Strike %</th>
-              </tr>
-              {% for row in season_data %}
-              <tr>
-                  <td>{{ row['Pitcher'] }}</td>
-                  <td>{{ row['total_pitches'] }}</td>
-                  <td>{{ row['strikes'] }}</td>
-		  <td>{{ row['first_pitch_total'] }}</td>
-                  <td>{{ row['first_pitch_strikes'] }}</td>
-                  <td>{{ row['strike_pct'] }}%</td>
-                  <td>{{ row['first_strike_pct'] }}%</td>
-	      </tr>
-	      {% endfor %}
-	 </table>
- 	 <h2>Pitch Type Strike % — Season Totals</h2>
- 	 <table border="1">
-   	     <tr>
-     		 <th>Pitch</th>
-     		 <th>Total Pitches</th>
-     		 <th>Strikes</th>
-     		 <th>Strike %</th>
-   	     </tr>
-	     {% for row in pitch_type_season %}
-   	     <tr>
-     		 <td>{{ row['Pitch'] }}</td>
-     		 <td>{{ row['total_pitches'] }}</td>
-     		 <td>{{ row['strikes'] }}</td>
-     		 <td>{{ row['strike_pct'] }}</td>
-   	     </tr>
-   	     {% endfor %}
-        </table>
-	    
-    {% else %}
-	<p>No data available for this view.<p>
-    {% endif %} 	
+    {% elif current_view == 'averages' %}
+
+        {% if vel_chart %}
+            <div class="chart-container">
+                {{ vel_chart|safe }}
+            </div>
+        {% endif %}
+
+        {% if spin_chart %}
+            <div class="chart-container">
+                {{ spin_chart|safe }}
+            </div>
+        {% endif %}
+
+        {% if velo_season_chart %}
+            <div class="chart-container">
+                {{ velo_season_chart|safe }}
+            </div>
+        {% endif %}
+
+        {% if velo_inning_chart %}
+            <div class="chart-container">
+                {{ velo_inning_chart|safe }}
+            </div>
+        {% endif %}
+
+        <h3>Game-by-Game Averages</h3>
+
+        {% if data and data|length > 0 %}
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Pitcher</th>
+                    <th>FB Velo</th>
+                    <th>FB Spin</th>
+                    <th>CH Velo</th>
+                    <th>CH Spin</th>
+                    <th>SL Velo</th>
+                    <th>SL Spin</th>
+                    <th>CB Velo</th>
+                    <th>CB Spin</th>
+                    <th>SNK Velo</th>
+                    <th>SNK Spin</th>
+                </tr>
+
+                {% for average in data %}
+                    <tr>
+                        <td>{{ average['Date'] }}</td>
+                        <td>{{ average['Pitcher'] }}</td>
+                        <td>{{ average['FB_Velo_Avg'] }}</td>
+                        <td>{{ average['FB_Spin_Avg'] }}</td>
+                        <td>{{ average['CH_Velo_Avg'] }}</td>
+                        <td>{{ average['CH_Spin_Avg'] }}</td>
+                        <td>{{ average['SL_Velo_Avg'] }}</td>
+                        <td>{{ average['SL_Spin_Avg'] }}</td>
+                        <td>{{ average['CB_Velo_Avg'] }}</td>
+                        <td>{{ average['CB_Spin_Avg'] }}</td>
+                        <td>{{ average['SNK_Velo_Avg'] }}</td>
+                        <td>{{ average['SNK_Spin_Avg'] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No averages data available.</p>
+        {% endif %}
+
+    {% elif current_view == 'strike_stats' %}
+
+    {% if strike_trend_chart %}
+    <div class="chart-container">
+        {{ strike_trend_chart|safe }}
+    </div>
+    {% endif %}
+
+    {% if strike_pitch_chart %}
+    <div class="chart-container">
+        {{ strike_pitch_chart|safe }}
+    </div>
+    {% endif %}
+
+    {% if first_strike_chart %}
+    <div class="chart-container">
+        {{ first_strike_chart|safe }}
+    </div>
+    {% endif %}
+
+        <h3>Game-by-Game Strike Stats</h3>
+
+        {% if game_data and game_data|length > 0 %}
+            <table>
+                <tr>
+                    {% for key in game_data[0].keys() %}
+                        <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+
+                {% for row in game_data %}
+                    <tr>
+                        {% for key in row.keys() %}
+                            <td>{{ row[key] }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No game-by-game strike stats available.</p>
+        {% endif %}
+
+        <h3>Season Strike Stats</h3>
+
+        {% if season_data and season_data|length > 0 %}
+            <table>
+                <tr>
+                    {% for key in season_data[0].keys() %}
+                        <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+
+                {% for row in season_data %}
+                    <tr>
+                        {% for key in row.keys() %}
+                            <td>{{ row[key] }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No season strike stats available.</p>
+        {% endif %}
+
+        <h3>Pitch Type Season Strike Stats</h3>
+
+        {% if pitch_type_season and pitch_type_season|length > 0 %}
+            <table>
+                <tr>
+                    {% for key in pitch_type_season[0].keys() %}
+                        <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+
+                {% for row in pitch_type_season %}
+                    <tr>
+                        {% for key in row.keys() %}
+                            <td>{{ row[key] }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No pitch type season strike stats available.</p>
+        {% endif %}
+
+    {% endif %}
+
 </body>
 </html>
-

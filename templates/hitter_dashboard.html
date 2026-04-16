@@ -1,39 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Player Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hitter Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .top-links {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Welcome, {{ session['username'] }}</h2>
-    <a href="{{ url_for('logout') }}">Logout</a>
 
-    <h3>Your Stats:</h3>
+    <div class="top-links">
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
 
-         <table border ="1">
-             <tr>
-                 <th>Hitter</th>
-                 <th>AB</th>
-                 <th>XBH %</th>
-                 <th>SLG %</th>
-                 <th>ISO</th>
-                 <th>OPS</th>
-                 <th>AVG</th>
-                 <th>RBI</th>
-                 <th>HR</th>
-             </tr>
-             {% for hitting_stat in data %}
-             <tr>
-                 <td>{{hitting_stat['Hitter'] }}</td>
-                 <td>{{hitting_stat['AB'] }}</td>
-                 <td>{{hitting_stat['XBH%'] }}</td>
-                 <td>{{hitting_stat['SLG%'] }}</td>
-                 <td>{{hitting_stat['ISO'] }}</td>
-                 <td>{{hitting_stat['OPS'] }}</td>
-                 <td>{{hitting_stat['AVG'] }}</td>
-                 <td>{{hitting_stat['RBI'] }}</td>
-                 <td>{{hitting_stat['HR'] }}</td> 
-             </tr>
-             {% endfor %}
-         </table>
+    <h2>Your Stats:</h2>
+
+    {% if data and data|length > 0 %}
+        <table>
+            <tr>
+                <th>Hitter</th>
+                <th>AB</th>
+                <th>XBH %</th>
+                <th>SLG %</th>
+                <th>ISO</th>
+                <th>OPS</th>
+                <th>AVG</th>
+                <th>RBI</th>
+                <th>HR</th>
+            </tr>
+            {% for hitting_stat in data %}
+            <tr>
+                <td>{{ hitting_stat['Hitter'] }}</td>
+                <td>{{ hitting_stat['AB'] }}</td>
+                <td>{{ hitting_stat['XBH%'] }}</td>
+                <td>{{ hitting_stat['SLG%'] }}</td>
+                <td>{{ hitting_stat['ISO'] }}</td>
+                <td>{{ hitting_stat['OPS'] }}</td>
+                <td>{{ hitting_stat['AVG'] }}</td>
+                <td>{{ hitting_stat['RBI'] }}</td>
+                <td>{{ hitting_stat['HR'] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No hitting stats available.</p>
+    {% endif %}
+
 </body>
 </html>
