@@ -139,7 +139,7 @@ Then open `http://127.0.0.1:5000` in your browser.
 - Pitcher usernames in the `users` table must match exactly the `Pitcher` 
   column values in the stat tables (case-sensitive)
 - Same rule applies for hitters — `hitting_users` username must match `Hitter` column
-- To set up secret key in app.py use this line to set up an environment variable on your local computer export
+- To set up secret key in app.py use this line to set up an environment variable on your local computer 
  ```bash
-  SECRET_KEY='some_long_random_string_here'
+  export SECRET_KEY='some_long_random_string_here'
   ```
