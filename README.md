@@ -27,7 +27,27 @@ git clone https://github.com/corinnefog/Portal-players.git
 cd Portal-players
 ```
 
-### 2. Create the database
+### 2. Create a virtual environment
+
+```bash
+python -m venv venv
+```
+
+Activate it:
+
+- **Mac/Linux:**
+```bash
+  source venv/bin/activate
+```
+- **Windows:**
+```bash
+  venv\Scripts\activate
+```
+
+You should see `(venv)` appear in your terminal. Always activate it before 
+running the app.
+
+### 3. Create the database
 
 Run the following in a Python shell or script to create `portalplayers.db`:
 
@@ -69,7 +89,7 @@ conn.close()
 Replace `'pitcher_username'`, `'hitter_username'`, and `'your_password'` with 
 real credentials. Repeat the INSERT lines for each player.
 
-### 3. Create the stat tables
+### 4. Create the stat tables
 
 The app expects these tables in `portalplayers.db`:
 
@@ -97,7 +117,7 @@ df.to_sql('table_name', conn, if_exists='append', index=False)
 conn.close()
 ```
 
-### 4. Expected CSV column names
+### 5. Expected CSV column names
 
 **pitches:** `Date, P_num, Pitcher, Inning, Outs, LR, Pitch, SB, Result, RBalls, Strikes, pitch_ab, pitch_IP, COUNT, Velocity, Spin_Rate`
 
@@ -111,7 +131,7 @@ conn.close()
 
 **hitting_stats:** `Hitter, AB, XBH%, SLG%, ISO, OPS, AVG, RBI, HR`
 
-### 5. Set a secret key
+### 6. Set a secret key
 
 In `app.py`, change the secret key to something unique and private:
 
@@ -124,7 +144,7 @@ To grab 'SECRET_KEY' create an environment variable in your local computer like 
   export SECRET_KEY='some_long_random_string_here'
 ```
 
-### 6. Run the app
+### 7. Run the app
 
 ```bash
 python app.py
