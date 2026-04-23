@@ -3,9 +3,10 @@ import sqlite3
 from werkzeug.security import check_password_hash
 import plotly.graph_objects as go
 from collections import defaultdict
+import os
 
 app = Flask(__name__)
-app.secret_key = ''
+app.secret_key = os.environ.get('SECRET_KEY', 'fallback_dev_key')
 
 PITCH_COLORS = {
     "FB": "#E63946",
